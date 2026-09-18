@@ -3,6 +3,7 @@ from decimal import Decimal
 
 from app.auth import hash_password
 from app.database import SessionLocal
+from app.models.color_match_ticket import ColorMatchTicket
 from app.models.grind_pass import GrindPass
 from app.models.mill import Mill
 from app.models.user import User
@@ -112,6 +113,44 @@ def seed() -> None:
             print("Seed data inserted.")
         else:
             print("Seed skipped (workshops exist).")
+
+        if db.query(ColorMatchTicket).count() == 0:
+            mills_by_code = {m.mill_code: m for m in db.query(Mill).all()}
+
+            def mill_id_of(code: str):
+                mill = mills_by_code.get(code)
+                return mill.id if mill else None
+
+            db.add_all(
+                [
+                    ColorMatchTicket(
+                        ticket_no="SC-2026-0001",
+                        target_hex="#C0392B",
+                        sample_hex="#C13A2C",
+                        delta_e=Decimal("0.8500"),
+                        result="pass",
+                        mill_id=mill_id_of("M-A1"),
+                    ),
+                    ColorMatchTicket(
+                        ticket_no="SC-2026-0002",
+                        target_hex="#1F4E79",
+                        sample_hex="#2E5F8F",
+                        delta_e=Decimal("3.6000"),
+                        result="fail",
+                        mill_id=mill_id_of("M-01"),
+                    ),
+                    ColorMatchTicket(
+                        ticket_no="SC-2026-0003",
+                        target_hex="#F2C500",
+                        sample_hex="#F0C30A",
+                        delta_e=Decimal("1.9500"),
+                        result="pass",
+                        mill_id=None,
+                    ),
+                ]
+            )
+            db.commit()
+            print("Color match tickets seeded.")
     finally:
         db.close()
 

@@ -1,6 +1,6 @@
 # InkMill-01 · 油墨研磨台账
 
-面向印刷油墨研磨车间的**研磨机状态、粘度取样与研磨遍次**台账系统。  
+面向印刷油墨研磨车间的**研磨机状态、粘度取样、研磨遍次与专色小样比对**台账系统。  
 **不是**库存、电商或 CMS 场景。
 
 ## 技术栈
@@ -34,7 +34,14 @@ MySQL 连接：`inkmill` / `inkmill` / `inkmill`（库名/用户/密码）
 2. **Mill**：`workshopId`, `millCode`（同车间唯一）, `pigmentBase`, `bowlLiters`, `status`（`grinding` \| `idle` \| `wash`）
 3. **ViscositySample**：`millId`, `sampledAt`, `viscosityPaS`（须 &gt; 0，否则 HTTP 400）, `tempC`, `notes`
 4. **GrindPass**：`millId`, `startedAt`, `passNo`（≥ 1）, `durationMin`（&gt; 0）, `mediaType`, `operatorName`
-5. **Dashboard**：`workshopTotal`, `grindingMillCount`, `samplesLast24h`, `passesLast7d`
+5. **ColorMatchTicket**（专色小样比对单）：`ticketNo`（全库唯一）, `targetHex` / `sampleHex`（`#RRGGBB`）, `deltaE`（须 ≥ 0）, `result`（`pass` \| `fail`）, `millId`（可空）, `createdAt`
+6. **Dashboard**：`workshopTotal`, `grindingMillCount`, `samplesLast24h`, `passesLast7d`
+
+### 专色比对判定规则
+
+- `deltaE ≤ 2` → `result` 必须为 `pass`；`deltaE > 2` → 必须为 `fail`。
+- 前端表单按 ΔE 实时计算判定标签，后端 `_validate` 对不一致组合返回 HTTP 400。
+- 列表接口支持按判定过滤：`GET /api/color-match-tickets?result=pass|fail`。
 
 ## 快速启动（Docker）
 
