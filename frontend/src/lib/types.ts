@@ -44,6 +44,19 @@ export interface GrindPass {
   operatorName: string;
 }
 
+export type ColorMatchResult = 'pass' | 'fail';
+
+export interface ColorMatchTicket {
+  id: number;
+  ticketNo: string;
+  targetHex: string;
+  sampleHex: string;
+  deltaE: number;
+  result: ColorMatchResult;
+  millId: number | null;
+  createdAt: string | null;
+}
+
 export interface DashboardStats {
   workshopTotal: number;
   grindingMillCount: number;

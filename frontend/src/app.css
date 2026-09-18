@@ -88,7 +88,8 @@ textarea {
   grid-column: 1 / -1;
 }
 
-.field label {
+.field label,
+.field .field-label {
   display: grid;
   gap: 0.3rem;
   font-size: 0.8rem;
@@ -199,6 +200,71 @@ textarea {
 
 .badge.wash {
   color: var(--paper);
+}
+
+.badge.pass {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+
+.badge.fail {
+  border-color: var(--vermillion-500);
+  color: var(--vermillion-400);
+}
+
+.swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--line);
+  margin-right: 0.35rem;
+  vertical-align: -2px;
+}
+
+.filters {
+  display: flex;
+  gap: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+
+.filters button {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--steel);
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+}
+
+.filters button.active {
+  border-color: var(--vermillion-700);
+  color: white;
+  background: rgba(192, 57, 43, 0.18);
+}
+
+.hex-input {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.hex-input input[type='color'] {
+  width: 42px;
+  height: 38px;
+  padding: 0.15rem;
+  flex: none;
+  cursor: pointer;
+}
+
+.hex-input input[type='text'] {
+  flex: 1;
+  min-width: 0;
+}
+
+.result-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 38px;
 }
 
 @media (max-width: 760px) {

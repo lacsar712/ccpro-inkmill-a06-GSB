@@ -34,7 +34,10 @@ MySQL 连接：`inkmill` / `inkmill` / `inkmill`（库名/用户/密码）
 2. **Mill**：`workshopId`, `millCode`（同车间唯一）, `pigmentBase`, `bowlLiters`, `status`（`grinding` \| `idle` \| `wash`）
 3. **ViscositySample**：`millId`, `sampledAt`, `viscosityPaS`（须 &gt; 0，否则 HTTP 400）, `tempC`, `notes`
 4. **GrindPass**：`millId`, `startedAt`, `passNo`（≥ 1）, `durationMin`（&gt; 0）, `mediaType`, `operatorName`
-5. **Dashboard**：`workshopTotal`, `grindingMillCount`, `samplesLast24h`, `passesLast7d`
+5. **ColorMatchTicket**（专色小样比对）：`ticketNo`（全库唯一）, `targetHex` / `sampleHex`（`#RRGGBB`）, `deltaE`（数值，须 ≥ 0）, `result`（`pass` \| `fail`）, `millId`（可空）, `createdAt`
+   - 判定规则：**ΔE ≤ 2 必须为 `pass`，ΔE &gt; 2 必须为 `fail`**，前后端均校验，不一致返回 HTTP 400
+   - 列表支持按结果过滤：`GET /api/color-match-tickets?result=pass|fail`
+6. **Dashboard**：`workshopTotal`, `grindingMillCount`, `samplesLast24h`, `passesLast7d`
 
 ## 快速启动（Docker）
 

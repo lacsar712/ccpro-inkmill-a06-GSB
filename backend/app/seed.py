@@ -3,6 +3,7 @@ from decimal import Decimal
 
 from app.auth import hash_password
 from app.database import SessionLocal
+from app.models.color_match_ticket import ColorMatchTicket
 from app.models.grind_pass import GrindPass
 from app.models.mill import Mill
 from app.models.user import User
@@ -105,6 +106,34 @@ def seed() -> None:
                         duration_min=Decimal("60.00"),
                         media_type="1.0mm 玻璃珠",
                         operator_name="李工",
+                    ),
+                ]
+            )
+            db.add_all(
+                [
+                    ColorMatchTicket(
+                        ticket_no="CM-2026-0001",
+                        target_hex="#C0392B",
+                        sample_hex="#C13B2E",
+                        delta_e=Decimal("1.2000"),
+                        result="pass",
+                        mill_id=m3.id,
+                    ),
+                    ColorMatchTicket(
+                        ticket_no="CM-2026-0002",
+                        target_hex="#1F618D",
+                        sample_hex="#2E86C1",
+                        delta_e=Decimal("4.6000"),
+                        result="fail",
+                        mill_id=m1.id,
+                    ),
+                    ColorMatchTicket(
+                        ticket_no="CM-2026-0003",
+                        target_hex="#B7950B",
+                        sample_hex="#B8910B",
+                        delta_e=Decimal("0.8500"),
+                        result="pass",
+                        mill_id=None,
                     ),
                 ]
             )

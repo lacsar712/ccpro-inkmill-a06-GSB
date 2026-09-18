@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from app.models.color_match_ticket import ColorMatchTicket
 from app.models.grind_pass import GrindPass
 from app.models.mill import Mill
 from app.models.user import User
@@ -63,4 +64,17 @@ def grind_pass_json(row: GrindPass) -> dict:
         "durationMin": _num(row.duration_min) or 0,
         "mediaType": row.media_type,
         "operatorName": row.operator_name,
+    }
+
+
+def color_match_ticket_json(row: ColorMatchTicket) -> dict:
+    return {
+        "id": row.id,
+        "ticketNo": row.ticket_no,
+        "targetHex": row.target_hex,
+        "sampleHex": row.sample_hex,
+        "deltaE": _num(row.delta_e) or 0,
+        "result": row.result,
+        "millId": row.mill_id,
+        "createdAt": dt_to_json(row.created_at),
     }
